@@ -4,6 +4,12 @@
 #include <math.h>
 #ifdef NANOVG_GLEW
 #  include <GL/glew.h>
+#else
+#define GL_GLEXT_PROTOTYPES
+
+#include <GL/gl.h>
+#include <GL/glext.h>
+
 #endif
 #include <GLFW/glfw3.h>
 #include "nanovg.h"

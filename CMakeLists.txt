@@ -46,7 +46,6 @@ option(USE_BUNDLED_ODB_FILE "build using pre generated odb file" OFF)
 option(ENABLE_IOURING "build with liburing" ON)
 option(ENABLE_LTO "enable LTO support" OFF)
 option(USE_SYSTEM_GLFW "enable using system libglfw" ON)
-option(USE_SYSTEM_GLEW "enable using system libglew" ON)
 
 find_program(MOLD_LINKER mold)
 find_program(LLD_LINKER lld)
@@ -198,11 +197,11 @@ endif()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 if (WIN32)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/debug)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/release)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/Debug)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/Release)
 endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DENABLE_LOGGER -DLOGGER_DBG_VIEW")
@@ -228,10 +227,6 @@ if (NOT USE_SYSTEM_GLFW)
 	endif()
 	add_subdirectory(3rd/glfw-3.3.8)
 endif ()
-
-if (NOT USE_SYSTEM_GLEW)
-	add_subdirectory(3rd/glew-2.2.0)
-endif()
 
 add_library(nanovg STATIC
 	src/nanovg.c
