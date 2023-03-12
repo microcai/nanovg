@@ -3,7 +3,10 @@ link_libraries(nanovg)
 
 find_package(GLEW)
 
-find_package(glfw3)
+
+if (NOT USE_SYSTEM_GLFW)
+    find_package(glfw3)
+endif()
 
 link_libraries(GLEW::GLEW glfw)
 

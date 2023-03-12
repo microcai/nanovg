@@ -45,6 +45,7 @@ option(ENABLE_MOLD "build using mold" OFF)
 option(USE_BUNDLED_ODB_FILE "build using pre generated odb file" OFF)
 option(ENABLE_IOURING "build with liburing" ON)
 option(ENABLE_LTO "enable LTO support" OFF)
+option(USE_SYSTEM_GLFW ON)
 
 find_program(MOLD_LINKER mold)
 find_program(LLD_LINKER lld)
@@ -213,8 +214,19 @@ find_package(OpenGL)
 CHECK_LIBRARY_EXISTS(m sin "" HAVE_LIB_M)
 
 if (HAVE_LIB_M)
-    set(EXTRA_LIBS ${EXTRA_LIBS} m)
+	link_libraries(m)
 endif (HAVE_LIB_M)
+
+if (NOT USE_SYSTEM_GLFW)
+	set(GLFW_BUILD_EXAMPLES OFF)
+	set(GLFW_BUILD_TESTS OFF)
+	set(GLFW_BUILD_DOCS OFF)
+	set(GLFW_INSTALL OFF)
+	if (NOT WIN32)
+		set(GLFW_USE_WAYLAND ON)
+	endif()
+	add_subdirectory(3rd/glfw-3.3.8)
+endif ()
 
 add_library(nanovg STATIC
 	src/nanovg.c
