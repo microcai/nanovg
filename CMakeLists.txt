@@ -45,7 +45,8 @@ option(ENABLE_MOLD "build using mold" OFF)
 option(USE_BUNDLED_ODB_FILE "build using pre generated odb file" OFF)
 option(ENABLE_IOURING "build with liburing" ON)
 option(ENABLE_LTO "enable LTO support" OFF)
-option(USE_SYSTEM_GLFW ON)
+option(USE_SYSTEM_GLFW "enable using system libglfw" ON)
+option(USE_SYSTEM_GLEW "enable using system libglew" ON)
 
 find_program(MOLD_LINKER mold)
 find_program(LLD_LINKER lld)
@@ -228,12 +229,16 @@ if (NOT USE_SYSTEM_GLFW)
 	add_subdirectory(3rd/glfw-3.3.8)
 endif ()
 
+if (NOT USE_SYSTEM_GLEW)
+	add_subdirectory(3rd/glew-2.2.0)
+endif()
+
 add_library(nanovg STATIC
 	src/nanovg.c
 )
 
 target_include_directories(nanovg PUBLIC include)
 
-target_link_libraries(nanovg OpenGL::EGL ${EXTRA_LIBS})
+target_link_libraries(nanovg OpenGL::OpenGL ${EXTRA_LIBS})
 
 add_subdirectory(example)
